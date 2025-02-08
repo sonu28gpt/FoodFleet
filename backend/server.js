@@ -34,6 +34,14 @@ app.use(cors(
     credentials: true,               // Cookies aur authentication headers allow karega
 }
 ))
+
+
+
+// for proxy render for cookie
+app.set("trust proxy", 1);
+
+
+
 app.use(express.static('pubic'))
 
 // db connection

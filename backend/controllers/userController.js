@@ -31,12 +31,14 @@ const loginUser = async (req,res) => {
         }
 
         const token = createToken(user._id)
-        const options={
-            httpOnly: true,  // JavaScript access nahi karega
-            secure: true,   // Sirf HTTPS ke liye nahi, HTTP me bhi allow
-            sameSite: "none",
-            maxAge:3600000
-        }
+        const isLocalhost = req.headers.origin?.includes("localhost"); // ✅ Check if request is from localhost
+
+        const options = {
+            httpOnly: true,
+            secure: !isLocalhost,  // ✅ Localhost pe false, baaki jagah true
+            sameSite: !isLocalhost ? "None" : "Lax",  // ✅ Localhost pe Lax, Production me None
+            maxAge: 3600000, // 1 hour
+        };
        return res.status(200).cookie("token",token,options).json({success:true,token})
         // res.json({success:true,token})
     } catch (error) {
@@ -75,12 +77,14 @@ const registerUser = async (req,res) => {
         const newUser = new userModel({name, email, password: hashedPassword})
         const user = await newUser.save();
         const token = createToken(user._id);
-        const options={
-            httpOnly: true,  // JavaScript access nahi karega
-            secure: true,   // Sirf HTTPS ke liye nahi, HTTP me bhi allow
-            sameSite: "strict",
-            maxAge:3600000
-        }
+        const isLocalhost = req.headers.origin?.includes("localhost"); // ✅ Check if request is from localhost
+
+        const options = {
+            httpOnly: true,
+            secure: !isLocalhost,  // ✅ Localhost pe false, baaki jagah true
+            sameSite: !isLocalhost ? "None" : "Lax",  // ✅ Localhost pe Lax, Production me None
+            maxAge: 3600000, // 1 hour
+        };
         res.status(200).cookie("token",token,options).json({success:true,token})
 
     } catch(error){
@@ -100,13 +104,14 @@ export const logOutUser=async(req,res)=>{
                     return res.json({success:false,message: "user does not exist"})
 
                 }
-                const options={
-                    httpOnly: true,  // JavaScript access nahi karega
-                    secure: true,   // Sirf HTTPS ke liye nahi, HTTP me bhi allow
-                    sameSite: "strict",
-                   
-                }
+                const isLocalhost = req.headers.origin?.includes("localhost"); // ✅ Check if request is from localhost
 
+                const options = {
+                    httpOnly: true,
+                    secure: !isLocalhost,  // ✅ Localhost pe false, baaki jagah true
+                    sameSite: !isLocalhost ? "None" : "Lax",  // ✅ Localhost pe Lax, Production me None
+                  
+                };
                 return res.status(200).clearCookie("token",options).json({success:true,message:"user log out successfully"});
 
     }catch(err){
