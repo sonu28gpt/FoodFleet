@@ -34,7 +34,7 @@ const loginUser = async (req,res) => {
         const options={
             httpOnly: true,  // JavaScript access nahi karega
             secure: true,   // Sirf HTTPS ke liye nahi, HTTP me bhi allow
-            sameSite: "strict",
+            sameSite: "none",
             maxAge:3600000
         }
        return res.status(200).cookie("token",token,options).json({success:true,token})
