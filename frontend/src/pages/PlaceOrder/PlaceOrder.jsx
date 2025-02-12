@@ -52,10 +52,11 @@ const PlaceOrder = () => {
                 const { session_url } = response.data;
                 // navigate("/myorders")
                 window.location.replace(session_url);
-                navigate("/verify")
+                // navigate(session_url);
             }
             else {
                 toast.error(response.message)
+                navigate("/")
             }
         }
         else{

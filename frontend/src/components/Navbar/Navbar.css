@@ -146,7 +146,8 @@ position: relative;
 }
 
 @media (max-width:750px) {
-    .navbar-menu {
+    .navbar-menu , .search-input{
         display: none;
     }
+    
 }
